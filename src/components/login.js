@@ -1,8 +1,12 @@
 import React from 'react';
 import {Label,Classes,Button} from '@blueprintjs/core';
+import "normalize.css";
+import "@blueprintjs/core/lib/css/blueprint.css";
+import "@blueprintjs/icons/lib/css/blueprint-icons.css";
 
 
 const Login = (props) => {
+    debugger
     return(
         <div className="App">
         <Label>
