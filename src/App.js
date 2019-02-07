@@ -1,18 +1,18 @@
 import React, { Component } from 'react';
-import Login from './containers/login';
-import {BrowserRouter, Route, Switch} from "react-router-dom";
-import Home from './components/home';
+import CustomerDetails from './components/customerDetails';
+import AddCustomer from './components/addCustomer'
+
 
 class App extends Component {
   render() {
     return (
-      <BrowserRouter>
-        <Switch>
-          <Route path = "/" exact component ={Login}/>
-          <Route path = "/login" component = {Login}/>
-          <Route path = "/home" component = {Home}/>
-        </Switch>
-      </BrowserRouter>
+        <div className = "App">
+          <div className = "navbar">
+            <h2 className = "center">Customer CRUD App</h2>
+          </div>
+          <AddCustomer/>
+          <CustomerDetails/>
+        </div>
       );
   }
 }

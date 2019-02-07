@@ -1,5 +1,6 @@
 import React from "react";
 import {Label} from '@blueprintjs/core';
+import withAuth from "../containers/withAuth";
 
 
 const Home = (props) => {
@@ -7,4 +8,4 @@ const Home = (props) => {
         <Label>Welcome</Label>
     );
 }
-export default Home
+export default withAuth(Home)

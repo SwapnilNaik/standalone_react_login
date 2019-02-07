@@ -3,8 +3,8 @@ import "@blueprintjs/core";
 import "normalize.css";
 import "@blueprintjs/core/lib/css/blueprint.css";
 import "@blueprintjs/icons/lib/css/blueprint-icons.css";
-import Login from '/home/swapnilnaik/SwapGithub/standalone_react_login/src/components/login';
-import {Redirect} from 'react-router-dom';
+import Login from '../components/login';
+import AuthService from './authsService';
 
 class LoginContainer extends Component {
     constructor(props){
@@ -17,6 +17,7 @@ class LoginContainer extends Component {
       this.onHandleChangeEmail = this.onHandleChangeEmail.bind(this);
       this.onHandleChangePassword = this.onHandleChangePassword.bind(this);
       this.submitLoginForm = this.submitLoginForm.bind(this);
+      this.Auth = new AuthService();
       //this.validateForm = this.validateForm.bind(this);
    };
   
@@ -37,26 +38,28 @@ class LoginContainer extends Component {
    }
   
    submitLoginForm(e) {
-    debugger;
     e.preventDefault();
     if (this.validateForm()) {
-      const email = this.state.fields.email; 
-      const password = this.state.fields.password;
-  
-      fetch('http://localhost:3000/authenticate',{
-          method: 'post',
-          headers: {'Content-Type':'application/json'},
-          body: JSON.stringify({email, password})
-        }).then((res)=> this.setState({statusCode: res.status}))
-        .then((data) => console.log(JSON.stringify(data)))
-        .catch((err) => console.log(err))
-  
-        let fields = {};
-        fields["email"] = "";
-        fields["password"] = "";
-        this.setState({fields:fields});
-        //alert("Form submitted");
+      // const email = this.state.fields.email; 
+      // const password = this.state.fields.password;
+      // let fields = {};
+      //fields["email"] = "";
+      //fields["password"] = "";
+      // this.setState({fields:fields});
+      //alert("Form submitted");
+      this.Auth.login(this.state.fields["email"], this.state.fields["password"])
+      .then(res => {
+        this.props.history.replace('/home');
+      })
+      .catch(err => {
+        alert(err);
+      })
     }
+  }
+
+  componentWillMount(){
+    if(this.Auth.loggedIn())
+    this.props.history.replace('/');
   }
   
   validateForm() {
@@ -98,7 +101,7 @@ class LoginContainer extends Component {
 
     render() {
       return (
-         this.state.statusCode === "" || this.state.statusCode === 401 ? (<Login 
+        <Login 
           email = {this.state.fields["email"]} 
           password = {this.state.fields["password"]}
           handleSubmit = {this.submitLoginForm} 
@@ -106,7 +109,7 @@ class LoginContainer extends Component {
           passwordHandleChange = {this.onHandleChangePassword}
           emailError = {this.state.errors["email"]}
           passwordError = {this.state.errors["password"]}
-        />) : <Redirect to="/home"/>
+        />
       );
     }
   }
